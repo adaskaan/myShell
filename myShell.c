@@ -1,4 +1,4 @@
-// C Program to design a shell in Linux
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -7,10 +7,6 @@
 #include<sys/wait.h>
 
 
-#define MAXCOM 1000 // max number of letters to be supported
-#define MAXLIST 100 // max number of commands to be supported
-
-// Clearing the shell using escape sequences
 
 
 char *readLine()
@@ -71,9 +67,9 @@ void Clear(){
 void Echo(char* str){
 	printf("\nEcho : %s",str);
 }
-// Function where the system command is executed
+// Command Execution by file name
 void callWithFileName(char** parsed){
-	// Forking a child process
+	//Child process
 	pid_t pid = fork();
 
 	if (pid == -1) {
@@ -94,7 +90,6 @@ void callWithFileName(char** parsed){
 // Run tekrar program
 void Tekrar(char** parsed){
 	pid_t pid = fork();
-	int flag = 0;
 	char* path;
 	path = "tekrar";
 
@@ -115,7 +110,6 @@ void Tekrar(char** parsed){
 // Run Islem program
 void Islem(char** parsed){
 	pid_t pid = fork();
-	int flag = 0;
 	char* path;
 	path = "islem";
 
@@ -153,7 +147,7 @@ void Help(){
 int commandExecution(char** parsed){
 	int NumberOfCommands = 8;
 	int i;
-	int switchOwnArg = 0;
+	int indicator = 0;
 	char* ListOfCommands[NumberOfCommands];
 
 	ListOfCommands[0] = "exit";
@@ -167,12 +161,12 @@ int commandExecution(char** parsed){
 
 	for (i = 0; i < NumberOfCommands; i++) {
 		if (strcmp(parsed[0], ListOfCommands[i]) == 0) {
-			switchOwnArg = i + 1;
+			indicator = i + 1;
 			break;
 		}
 	}
 
-	switch (switchOwnArg) {
+	switch (indicator) {
 	case 1:
 		exit(0);
 	case 2:
@@ -226,16 +220,10 @@ int main()
 	char inputString[1000], *Args[100];
 
 	while (1) {
-		// print shell line
 		printf("myshell>>");
-		// take input
 		if (takeInput(inputString))
 			continue;
-		// process
 		processString(inputString, Args);
-
-
-		// execute
 		commandExecution(Args);
 
 	}
